@@ -259,8 +259,7 @@ jobs:
           GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
           GRADIENT_MAIL: ${{ secrets.GRADIENT_MAIL }}
           CONFIG_PATH: ${{ inputs.config_path }}
-          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-          TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
+          HF_KEY: ${{ secrets.HF_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           CREDS_KEY: ${{ secrets.CREDS_KEY }}
           CREDS_IV: ${{ secrets.CREDS_IV }}
@@ -278,7 +277,6 @@ jobs:
           SMTP_SECURE: ${{vars.SMTP_SECURE}}
           SMTP_PASSWORD: ${{secrets.SMTP_PASSWORD}}
           APP_TITLE: ${{ inputs.app_title }}
-          HELP_AND_FAQ_URL: ${{ vars.help_and_faq_url }}
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
           WEBSEARCH_SEARCH_PROVIDER: ${{ vars.websearch_search_provider }}
           FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
@@ -300,9 +298,8 @@ jobs:
             printf 'GH_PAT=%q\n' "$GH_PAT"
             printf 'GHCR_USERNAME=%q\n' "$GHCR_USERNAME"
             printf 'CONFIG_PATH=%q\n' "$CONFIG_PATH"
+            printf 'HF_KEY=%q\n' "$HF_KEY"
             printf 'GRADIENT_MAIL=%q\n' "$GRADIENT_MAIL"
-            printf 'MISTRAL_API_KEY=%q\n' "$MISTRAL_API_KEY"
-            printf 'TOGETHER_API_KEY=%q\n' "$TOGETHER_API_KEY"
             printf 'OPENAI_API_KEY=%q\n' "$OPENAI_API_KEY"
             printf 'CREDS_KEY=%q\n' "$CREDS_KEY"
             printf 'CREDS_IV=%q\n' "$CREDS_IV"
@@ -320,7 +317,6 @@ jobs:
             printf 'SMTP_SECURE=%q\n' "$SMTP_SECURE"
             printf 'SMTP_PASSWORD=%q\n' "$SMTP_PASSWORD"
             printf 'APP_TITLE=%q\n' "$APP_TITLE"
-            printf 'HELP_AND_FAQ_URL=%q\n' "$HELP_AND_FAQ_URL"
             printf 'SERPER_API_KEY=%q\n' "$SERPER_API_KEY"
             printf 'WEBSEARCH_SEARCH_PROVIDER=%q\n' "$WEBSEARCH_SEARCH_PROVIDER"
             printf 'FIRECRAWL_API_KEY=%q\n' "$FIRECRAWL_API_KEY"
