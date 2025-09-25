@@ -7,10 +7,12 @@ const {
   createRun,
   Tokenizer,
   checkAccess,
+  logAxiosError,
   resolveHeaders,
   getBalanceConfig,
   memoryInstructions,
   formatContentStrings,
+  getTransactionsConfig,
   createMemoryProcessor,
 } = require('@librechat/api');
 const {
@@ -87,11 +89,10 @@ function createTokenCounter(encoding) {
 }
 
 function logToolError(graph, error, toolId) {
-  logger.error(
-    '[api/server/controllers/agents/client.js #chatCompletion] Tool Error',
+  logAxiosError({
     error,
-    toolId,
-  );
+    message: `[api/server/controllers/agents/client.js #chatCompletion] Tool Error "${toolId}"`,
+  });
 }
 
 class AgentClient extends BaseClient {
@@ -262,6 +263,20 @@ class AgentClient extends BaseClient {
       );
 
       this.options.attachments = files;
+    }
+
+    const hasAttachedFiles =
+      this.message_file_map && Object.values(this.message_file_map).some((arr) => arr?.length);
+    const hasFileSearchTool = Array.isArray(this.options.agent?.tools)
+      ? this.options.agent.tools.some((t) => t?.name === 'file_search')
+      : false;
+    if (hasAttachedFiles && hasFileSearchTool) {
+      const biasInstruction = [
+        'When files are attached, first call the file_search tool to retrieve the most relevant passages.',
+        'Use the retrieved quotes to draft the answer and include citation anchors as instructed.',
+      ].join(' ');
+      systemContent = [biasInstruction, systemContent].filter(Boolean).join('\n');
+      logger.debug('[AgentClient] Prepended file_search bias instruction');
     }
 
     /** Note: Bedrock uses legacy RAG API handling */
@@ -623,11 +638,13 @@ class AgentClient extends BaseClient {
    * @param {string} [params.model]
    * @param {string} [params.context='message']
    * @param {AppConfig['balance']} [params.balance]
+   * @param {AppConfig['transactions']} [params.transactions]
    * @param {UsageMetadata[]} [params.collectedUsage=this.collectedUsage]
    */
   async recordCollectedUsage({
     model,
     balance,
+    transactions,
     context = 'message',
     collectedUsage = this.collectedUsage,
   }) {
@@ -653,6 +670,7 @@ class AgentClient extends BaseClient {
       const txMetadata = {
         context,
         balance,
+        transactions,
         conversationId: this.conversationId,
         user: this.user ?? this.options.req.user?.id,
         endpointTokenConfig: this.options.endpointTokenConfig,
@@ -868,11 +886,10 @@ class AgentClient extends BaseClient {
         if (agent.useLegacyContent === true) {
           messages = formatContentStrings(messages);
         }
-        if (
-          agent.model_parameters?.clientOptions?.defaultHeaders?.['anthropic-beta']?.includes(
-            'prompt-caching',
-          )
-        ) {
+        const defaultHeaders =
+          agent.model_parameters?.clientOptions?.defaultHeaders ??
+          agent.model_parameters?.configuration?.defaultHeaders;
+        if (defaultHeaders?.['anthropic-beta']?.includes('prompt-caching')) {
           messages = addCacheControl(messages);
         }
 
@@ -1051,7 +1068,12 @@ class AgentClient extends BaseClient {
         }
 
         const balanceConfig = getBalanceConfig(appConfig);
-        await this.recordCollectedUsage({ context: 'message', balance: balanceConfig });
+        const transactionsConfig = getTransactionsConfig(appConfig);
+        await this.recordCollectedUsage({
+          context: 'message',
+          balance: balanceConfig,
+          transactions: transactionsConfig,
+        });
       } catch (err) {
         logger.error(
           '[api/server/controllers/agents/client.js #chatCompletion] Error recording collected usage',
@@ -1245,11 +1267,13 @@ class AgentClient extends BaseClient {
       });
 
       const balanceConfig = getBalanceConfig(appConfig);
+      const transactionsConfig = getTransactionsConfig(appConfig);
       await this.recordCollectedUsage({
         collectedUsage,
         context: 'title',
         model: clientOptions.model,
         balance: balanceConfig,
+        transactions: transactionsConfig,
       }).catch((err) => {
         logger.error(
           '[api/server/controllers/agents/client.js #titleConvo] Error recording collected usage',
