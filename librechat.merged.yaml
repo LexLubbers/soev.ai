@@ -116,17 +116,17 @@ fileConfig:
 
     # If you use a named custom provider (e.g., 'Open Source'), add it here too with the same list.
 # MCP Servers Configuration
-# mcpServers:
+mcpServers:
 #   # Your localhost MCP server with API key authentication
-#   WUR:
-#     type: streamable-http  # or "sse" depending on your server's transport
-#     url: http://localhost:3434/mcp  # Try without /mcp first - check your server's actual endpoint
-#     headers:
-#       Authorization: "Bearer ${GKN_MCP_KEY}"  # Use environment variable for API key
-#       # Alternative: X-API-Key: "${GKN_MCP_KEY}" # depending on your server's expected header format
-#     timeout: 60000  # 1 minute timeout
-#     serverInstructions: true  # Enable server-provided instructions
-#     chatMenu: true  # Show in chat dropdown (set to false to only use with agents)
+  Landbouw & Natuur:
+    type: streamable-http  # or "sse" depending on your server's transport
+    url: http://gkn-mcp-server:8000/mcp  # Try without /mcp first - check your server's actual endpoint
+    headers:
+      Authorization: "Bearer ${GKN_MCP_KEY}"  # Use environment variable for API key
+      # Alternative: X-API-Key: "${GKN_MCP_KEY}" # depending on your server's expected header format
+    timeout: 60000  # 1 minute timeout
+    serverInstructions: true  # Enable server-provided instructions
+    chatMenu: true  # Show in chat dropdown (set to false to only use with agents)
     
   # NEO NL:
   #   type: streamable-http

@@ -260,6 +260,7 @@ jobs:
           GRADIENT_MAIL: ${{ secrets.GRADIENT_MAIL }}
           CONFIG_PATH: ${{ inputs.config_path }}
           HF_KEY: ${{ secrets.HF_KEY }}
+          GKN_API_KEY: ${{ secrets.GKN_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           CREDS_KEY: ${{ secrets.CREDS_KEY }}
           CREDS_IV: ${{ secrets.CREDS_IV }}
@@ -300,6 +301,7 @@ jobs:
             printf 'CONFIG_PATH=%q\n' "$CONFIG_PATH"
             printf 'HF_KEY=%q\n' "$HF_KEY"
             printf 'GRADIENT_MAIL=%q\n' "$GRADIENT_MAIL"
+            printf 'GKN_API_KEY=%q\n' "$GKN_API_KEY"
             printf 'OPENAI_API_KEY=%q\n' "$OPENAI_API_KEY"
             printf 'CREDS_KEY=%q\n' "$CREDS_KEY"
             printf 'CREDS_IV=%q\n' "$CREDS_IV"
