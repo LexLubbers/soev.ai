@@ -3,6 +3,7 @@ import { EarthIcon } from 'lucide-react';
 import { isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
 import type { Endpoint } from '~/common';
 import { useModelSelectorContext } from '../ModelSelectorContext';
+import { aliasModelId } from '../utils';
 import { CustomMenuItem as MenuItem } from '../CustomMenu';
 
 interface EndpointModelItemProps {
@@ -14,7 +15,7 @@ interface EndpointModelItemProps {
 export function EndpointModelItem({ modelId, endpoint, isSelected }: EndpointModelItemProps) {
   const { handleSelectModel } = useModelSelectorContext();
   let isGlobal = false;
-  let modelName = modelId;
+  let modelName = modelId ? aliasModelId(modelId) : modelId;
   const avatarUrl = endpoint?.modelIcons?.[modelId ?? ''] || null;
 
   // Use custom names if available
