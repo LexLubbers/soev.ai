@@ -240,7 +240,6 @@ endpoints:
     #   # Drop Default params parameters from the request. See default params in guide linked below.
     #   # NOTE: For Mistral, it is necessary to drop the following parameters or you will encounter a 422 Error:
     #   dropParams: ['stop', 'user', 'frequency_penalty', 'presence_penalty']
-      
     - name: 'Open Source'
       apiKey: '${HF_KEY}'
       baseURL: 'https://router.huggingface.co/v1'
@@ -248,8 +247,10 @@ endpoints:
         default:
           - 'openai/gpt-oss-120b:groq'
         fetch: false
+      modelDisplayLabel: 'govai/gpt-oss-120b'
+      modelAliases:
+        'openai/gpt-oss-120b:groq': 'govai/gpt-oss-120b'
       titleConvo: true
-      modelDisplayLabel: 'GovAI (gpt-oss-120b)'
       titleModel: 'openai/gpt-oss-120b:groq'
       # addParams:
       #   tool_choice: 'required'

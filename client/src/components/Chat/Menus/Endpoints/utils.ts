@@ -11,6 +11,18 @@ import type { useLocalize } from '~/hooks';
 import SpecIcon from '~/components/Chat/Menus/Endpoints/components/SpecIcon';
 import { Endpoint, SelectedValues } from '~/common';
 
+/**
+ * Temporary hardcoded model alias mapping for selector display.
+ * Replace with a YAML-driven configuration later to avoid hardcoding.
+ */
+const HARD_CODED_MODEL_ALIASES: Record<string, string> = {
+  'openai/gpt-oss-120b:groq': 'govai/gpt-oss-120b',
+};
+
+export function aliasModelId(modelId: string): string {
+  return HARD_CODED_MODEL_ALIASES[modelId] ?? modelId;
+}
+
 export function filterItems<
   T extends {
     label: string;
@@ -205,7 +217,7 @@ export const getDisplayValue = ({
       return endpoint.assistantNames[selectedValues.model];
     }
 
-    return selectedValues.model;
+    return aliasModelId(selectedValues.model);
   }
 
   if (selectedValues.endpoint) {
