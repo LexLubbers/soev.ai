@@ -177,3 +177,4 @@ Components/Auth/AuthLayout.tsx -> larger logos for the login page
 Added some languages for the new settings
 
 packages/api/src/mcp/parsers.ts -> added support for file_search like mcp servers to show UI reference tabs.
+packages/api/src/mcp/types/index.ts -> added a type for file_search like mcp servers.

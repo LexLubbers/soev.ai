@@ -15,6 +15,7 @@ import {
 } from '@librechat/client';
 import type { ValidSource, ImageResult } from 'librechat-data-provider';
 import { FaviconImage, getCleanDomain } from '~/components/Web/SourceHovercard';
+import { MCPFileItem } from '~/components/Web/MCPFileItem';
 import SourcesErrorBoundary from './SourcesErrorBoundary';
 import { useFileDownload } from '~/data-provider';
 import { useSearchContext } from '~/Providers';
@@ -494,13 +495,19 @@ function FilesGroup({ files, messageId, conversationId, limit = 3 }: FilesGroupP
   const hasMoreFiles = remainingFiles.length > 0;
 
   return (
-    <div className="scrollbar-none grid w-full grid-cols-4 gap-2 overflow-x-auto">
+    <div className="scrollbar-none grid w-full auto-rows-fr grid-cols-4 gap-2 overflow-x-auto">
       <OGDialog>
-        {visibleFiles.map((file, i) => (
-          <div key={`file-${i}`} className="w-full min-w-[120px]">
-            <FileItem file={file} messageId={messageId} conversationId={conversationId} />
-          </div>
-        ))}
+        {visibleFiles.map((file, i) => {
+          // Use MCPFileItem if file has MCP metadata (year or contentsubtype)
+          const hasMCPMetadata = file.metadata?.year || file.metadata?.contentsubtype;
+          const ItemComponent = hasMCPMetadata ? MCPFileItem : FileItem;
+          
+          return (
+            <div key={`file-${i}`} className="flex h-full w-full min-w-[120px]">
+              <ItemComponent file={file} messageId={messageId} conversationId={conversationId} />
+            </div>
+          );
+        })}
         {hasMoreFiles && (
           <OGDialogTrigger className="flex flex-col rounded-lg bg-surface-primary-contrast px-3 py-2 text-sm transition-all duration-300 hover:bg-surface-tertiary">
             <div className="flex items-center gap-2">
@@ -529,15 +536,21 @@ function FilesGroup({ files, messageId, conversationId, limit = 3 }: FilesGroupP
           </div>
           <div className="flex-1 overflow-y-auto px-3 py-2">
             <div className="flex flex-col gap-2">
-              {[...visibleFiles, ...remainingFiles].map((file, i) => (
-                <FileItem
-                  key={`more-file-${i}`}
-                  file={file}
-                  messageId={messageId}
-                  conversationId={conversationId}
-                  expanded={true}
-                />
-              ))}
+              {[...visibleFiles, ...remainingFiles].map((file, i) => {
+                // Use MCPFileItem if file has MCP metadata (year or contentsubtype)
+                const hasMCPMetadata = file.metadata?.year || file.metadata?.contentsubtype;
+                const ItemComponent = hasMCPMetadata ? MCPFileItem : FileItem;
+                
+                return (
+                  <ItemComponent
+                    key={`more-file-${i}`}
+                    file={file}
+                    messageId={messageId}
+                    conversationId={conversationId}
+                    expanded={true}
+                  />
+                );
+              })}
             </div>
           </div>
         </OGDialogContent>

@@ -220,8 +220,16 @@ export function formatToolContent(
                 const pages = source.pages && source.pages.length > 0 
                   ? ` (pages: ${source.pages.join(', ')})` 
                   : '';
+                const metadata = [];
+                if (source.metadata?.year) {
+                  metadata.push(source.metadata.year);
+                }
+                if (source.metadata?.contentsubtype) {
+                  metadata.push(source.metadata.contentsubtype);
+                }
+                const metadataStr = metadata.length > 0 ? ` [${metadata.join(', ')}]` : '';
                 // Use double backslash to create literal \ue202 string
-                citationGuide += `- ${fileName}${pages}: \\ue202turn0file${index}\n`;
+                citationGuide += `- ${fileName}${pages}${metadataStr}: \\ue202turn0file${index}\n`;
               });
               
               currentTextBlock += citationGuide;
