@@ -375,5 +375,14 @@
   "com_ui_terms_and_conditions": "Gebruiksvoorwaarden",
   "com_ui_unarchive": "Uit archiveren",
   "com_ui_unarchive_error": "Kan conversatie niet uit archiveren",
-  "com_ui_upload_success": "Bestand succesvol geüpload"
+  "com_ui_upload_success": "Bestand succesvol geüpload",
+  "com_file_pages": "Pagina's: {{pages}}",
+  "com_file_source": "Bestand",
+  "com_file_unknown": "Onbekend bestand",
+  "com_sources_agent_file": "Brondocument",
+  "com_sources_agent_files": "Agent Bestanden",
+  "com_sources_pages": "Pagina's",
+  "com_external_link_warning_title": "GovAI verlaten",
+  "com_external_link_warning_message": "U staat op het punt om een externe website te bezoeken. Controleer de URL voordat u verdergaat.",
+  "com_external_link_continue": "Ga verder naar externe website"
 }

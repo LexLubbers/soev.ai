@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { useToastContext } from '@librechat/client';
 import type { CitationProps } from './types';
 import { SourceHovercard, FaviconImage, getCleanDomain } from '~/components/Web/SourceHovercard';
+import { FileSourceCitation } from '~/components/Web/FileSourceCitation';
 import { CitationContext, useCitation, useCompositeCitations } from './Context';
 import { useFileDownload } from '~/data-provider';
 import { useLocalize } from '~/hooks';
@@ -190,6 +191,19 @@ export function Citation(props: CitationComponentProps) {
       localize('com_citation_source')
     );
   };
+
+  // Use FileSourceCitation for file types (MCP sources with metadata)
+  if (isFileType) {
+    return (
+      <FileSourceCitation
+        source={refData}
+        label={getCitationLabel()}
+        citationId={citationId || undefined}
+        onMouseEnter={() => setHoveredCitationId(citationId || null)}
+        onMouseLeave={() => setHoveredCitationId(null)}
+      />
+    );
+  }
 
   return (
     <SourceHovercard

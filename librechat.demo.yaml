@@ -65,6 +65,9 @@ registration:
 #   socialLogins: ['github', 'google', 'discord', 'openid', 'facebook', 'apple', 'saml']
   allowedDomains:
     - "gradient-ds.com"
+    - "kwinkgroep.nl"
+    - "managementresultants.com"
+    - "almere.nl"
 
 
 # Example Balance settings
@@ -129,8 +132,8 @@ fileConfig:
 mcpServers:
 #   # Your localhost MCP server with API key authentication
   Landbouw & Natuur:
-    type: streamable-http
-    url: http://localhost:3434/mcp
+    type: streamable-http  # or "sse" depending on your server's transport
+    url: http://gkn-mcp-server:8000/mcp  # Try without /mcp first - check your server's actual endpoint
     headers:
       Authorization: "Bearer ${GKN_MCP_KEY}"
     timeout: 60000
@@ -249,7 +252,6 @@ endpoints:
           - 'openai/gpt-oss-120b:groq'
         fetch: false
       titleConvo: true
-      modelDisplayLabel: 'GovAI (gpt-oss-120b)'
       titleModel: 'openai/gpt-oss-120b:groq'
       # addParams:
       #   tool_choice: 'required'

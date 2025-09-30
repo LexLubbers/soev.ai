@@ -123,6 +123,19 @@ export type FileSearchSource = {
   [key: string]: unknown;
 };
 
+export type MCPFileSearchSource = FileSearchSource & {
+  pages?: number[];
+  pageRelevance?: Record<string, number>;
+  metadata?: {
+    url?: string;
+    year?: string;
+    contentsubtype?: string;
+    storageType?: string;
+    [key: string]: unknown;
+  };
+};
+
+
 export type Artifacts =
   | {
       content?: FormattedContent[];
@@ -130,7 +143,7 @@ export type Artifacts =
         data: UIResource[];
       };
       [Tools.file_search]?: {
-        sources: FileSearchSource[];
+        sources: (FileSearchSource | MCPFileSearchSource)[];
         fileCitations?: boolean;
       };
       [Tools.web_search]?: SearchResultData;
