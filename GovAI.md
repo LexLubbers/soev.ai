@@ -99,6 +99,14 @@ docker compose -f docker-compose.local.yml up --build -d
 
 The stack watches `admin-overrides.yaml`; saving settings in the Admin Panel rewrites that file and regenerates `librechat.merged.yaml` automatically.
 
+## User creation
+
+**development**
+npm run create-user
+
+**production**
+docker exec -it LibreChat-API /bin/sh -c "cd .. && npm run create-user"
+
 ---
 
 ## Project Structure
@@ -167,3 +175,5 @@ client/src/components/Nav/SettingsTabs/Chat/Chat.tsx -> added the setttings for 
 Components/Auth/AuthLayout.tsx -> larger logos for the login page
 
 Added some languages for the new settings
+
+packages/api/src/mcp/parsers.ts -> added support for file_search like mcp servers to show UI reference tabs.

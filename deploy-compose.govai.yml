@@ -111,6 +111,8 @@ services:
       - DB_HOST=vectordb
       - RAG_PORT=${RAG_PORT:-8000}
       - OPENAI_API_KEY=${RAG_OPENAI_API_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
     restart: always
     depends_on:
       - vectordb
