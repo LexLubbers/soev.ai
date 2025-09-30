@@ -65,6 +65,9 @@ registration:
 #   socialLogins: ['github', 'google', 'discord', 'openid', 'facebook', 'apple', 'saml']
   allowedDomains:
     - "gradient-ds.com"
+    - "kwinkgroep.nl"
+    - "managementresultants.com"
+    - "almere.nl"
 
 
 # Example Balance settings
@@ -132,11 +135,26 @@ mcpServers:
     type: streamable-http  # or "sse" depending on your server's transport
     url: http://gkn-mcp-server:8000/mcp  # Try without /mcp first - check your server's actual endpoint
     headers:
-      Authorization: "Bearer ${GKN_MCP_KEY}"  # Use environment variable for API key
-      # Alternative: X-API-Key: "${GKN_MCP_KEY}" # depending on your server's expected header format
-    timeout: 60000  # 1 minute timeout
-    serverInstructions: true  # Enable server-provided instructions
+      Authorization: "Bearer ${GKN_MCP_KEY}"
+    timeout: 60000
     chatMenu: true  # Show in chat dropdown (set to false to only use with agents)
+    # Custom instructions provided here (overrides server-provided instructions)
+    serverInstructions: |
+      When using the gkn_search tool, synthesize the results into a clear, comprehensive answer in the language of the question.
+      
+      **CITE SEARCH RESULTS:**
+      Use the EXACT anchor markers provided in the search results. The results include citation markers like \ue202turn0file0.
+      Copy these markers into your response immediately after statements derived from that source:
+      - Single source: "Veenweidegebieden zijn weidegebieden met een hoge waterstand \ue202turn0file1."
+      - Multiple sources: "Dit wordt ondersteund door meerdere studies \ue200\ue202turn0file0\ue202turn0file1\ue201."
+      
+      **Critical rules:**
+      - Copy the \ue202turn0file{number} markers EXACTLY as shown in the search results
+      - Place markers immediately after sentences (with a space before)
+      - Mention the source title/filename in your text before the citation marker
+      - Do NOT use brackets 【】, markdown links, or footnotes
+      
+      Synthesize information naturally while preserving these citation markers.
     
   # NEO NL:
   #   type: streamable-http

@@ -367,6 +367,7 @@ class AgentClient extends BaseClient {
         if (mcpInstructions) {
           systemContent = [systemContent, mcpInstructions].filter(Boolean).join('\n\n');
           logger.debug('[AgentClient] Injected MCP instructions for servers:', mcpServers);
+          logger.info('[AgentClient:MCP] MCP instructions:', mcpInstructions);
         }
       } catch (error) {
         logger.error('[AgentClient] Failed to inject MCP instructions:', error);
