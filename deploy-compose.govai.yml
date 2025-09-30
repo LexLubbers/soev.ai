@@ -140,7 +140,7 @@ services:
       - ALL
 
   gkn-mcp-server:
-    image: ghcr.io/gradient-ds/gkn-mcp:0.1.1
+    image: ghcr.io/gradient-ds/gkn-mcp:latest
     environment:
       - GKN_API_KEY=${GKN_API_KEY}
       - GKN_BASE_URL=https://gradient.groenkennisnet.nl
