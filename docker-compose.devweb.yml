@@ -43,6 +43,13 @@ services:
     environment:
       DB_HOST: vectordb
       RAG_PORT: 8000
+      OPENAI_API_KEY: ${RAG_OPENAI_API_KEY}
+      OPENAI_BASE_URL: ${RAG_OPENAI_BASE_URL}
+      EMBEDDINGS_MODEL: ${RAG_EMBEDDINGS_MODEL}
+      # EMBEDDINGS_PROVIDER: openai
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      RAG_CHECK_EMBEDDING_CTX_LENGTH: false
     env_file:
       - .env
     ports:

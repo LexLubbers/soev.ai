@@ -240,6 +240,7 @@ endpoints:
     #   # Drop Default params parameters from the request. See default params in guide linked below.
     #   # NOTE: For Mistral, it is necessary to drop the following parameters or you will encounter a 422 Error:
     #   dropParams: ['stop', 'user', 'frequency_penalty', 'presence_penalty']
+      
     - name: 'Open Source'
       apiKey: '${HF_KEY}'
       baseURL: 'https://router.huggingface.co/v1'
@@ -247,11 +248,25 @@ endpoints:
         default:
           - 'openai/gpt-oss-120b:groq'
         fetch: false
-      modelDisplayLabel: 'govai/gpt-oss-120b'
-      modelAliases:
-        'openai/gpt-oss-120b:groq': 'govai/gpt-oss-120b'
+      modelDisplayLabel: 'GovAI'
       titleConvo: true
       titleModel: 'openai/gpt-oss-120b:groq'
+
+    - name: 'Nebul'
+      apiKey: '${NEBUL_API_KEY}'
+      baseURL: 'https://api.chat.nebul.io/v1'
+      models:
+        default:
+          - 'gpt-oss-120b-nim'
+          - 'meta-llama/Llama-4-Maverick-17B-128E-Instruct'
+          - 'mistralai/Mistral-Small-3.2-24B-Instruct-2506'
+          - 'deepseek-ai/DeepSeek-R1'
+          - 'Qwen/Qwen3-VL-235B-A22B-Thinking'
+          - 'deepseek-ai/DeepSeek-V3.1'
+        fetch: true
+      modelDisplayLabel: 'Nebul'
+      titleConvo: true
+      titleModel: 'gpt-oss-120b-nim'
       # addParams:
       #   tool_choice: 'required'
 

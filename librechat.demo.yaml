@@ -252,7 +252,7 @@ endpoints:
         default:
           - 'openai/gpt-oss-120b:groq'
         fetch: false
-      modelDisplayLabel: 'govai/gpt-oss-120b'
+      modelDisplayLabel: 'GovAI/gpt-oss-120b'
       titleConvo: true
       titleModel: 'openai/gpt-oss-120b:groq'
       # addParams:
