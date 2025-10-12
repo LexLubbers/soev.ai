@@ -16,7 +16,7 @@ import { Endpoint, SelectedValues } from '~/common';
  * Replace with a YAML-driven configuration later to avoid hardcoding.
  */
 const HARD_CODED_MODEL_ALIASES: Record<string, string> = {
-  'openai/gpt-oss-120b:groq': 'govai/gpt-oss-120b',
+  'openai/gpt-oss-120b:groq': 'soev.ai/gpt-oss-120b',
 };
 
 export function aliasModelId(modelId: string): string {
