@@ -32,15 +32,15 @@ RUN npm ci
 FROM base-min AS data-provider-build
 WORKDIR /app/packages/data-provider
 COPY packages/data-provider/package*.json ./
-RUN npm install
-COPY packages/data-provider ./
+RUN npm install --no-package-lock
+COPY packages/data-provider/ ./
 RUN npm run build
 
 # Build `data-schemas` package
 FROM base-min AS data-schemas-build
 WORKDIR /app/packages/data-schemas
 COPY packages/data-schemas/package*.json ./
-RUN npm install
+RUN npm install --no-package-lock
 COPY packages/data-schemas ./
 COPY --from=data-provider-build /app/packages/data-provider/dist /app/packages/data-provider/dist
 RUN npm run build
@@ -49,7 +49,7 @@ RUN npm run build
 FROM base-min AS api-package-build
 WORKDIR /app/packages/api
 COPY packages/api/package*.json ./
-RUN npm install
+RUN npm install --no-package-lock
 COPY packages/api ./
 COPY --from=data-provider-build /app/packages/data-provider/dist /app/packages/data-provider/dist
 COPY --from=data-schemas-build /app/packages/data-schemas/dist /app/packages/data-schemas/dist
@@ -68,7 +68,7 @@ FROM base AS admin-frontend-build
 WORKDIR /app/admin-frontend
 # Copy only package.json to avoid lockfile mismatch, then install deps
 COPY admin-frontend/package.json ./
-RUN npm install
+RUN npm install --no-package-lock
 COPY admin-frontend ./
 RUN npm run build
 
@@ -76,7 +76,7 @@ RUN npm run build
 FROM base-min AS client-lib-build
 WORKDIR /app/packages/client
 COPY packages/client/package*.json ./
-RUN npm install
+RUN npm install --no-package-lock
 COPY packages/client ./
 RUN npm run build
 
