@@ -1,34 +1,34 @@
 services:
   librechat_api:
-    # image: ghcr.io/lexgovai/librechat-api:${LIBRECHAT_TAG:-latest}
+    # image: ghcr.io/Gradient-DS/soevai-api:${LIBRECHAT_TAG:-latest}
     build:
       context: .
-      dockerfile: Dockerfile.GovAI.multi
+      dockerfile: Dockerfile.soev.ai.multi
       target: api-build
     container_name: librechat_api
     restart: unless-stopped
     labels:
-      - "govgpt.restart=enabled"
+      - "soevai.restart=enabled"
     environment:
-      CONFIG_PATH: /app/librechat.merged.yaml
-      BASE_CONFIG_PATH: /app/librechat.yaml
+      CONFIG_PATH: /soevai/librechat.soev.ai.yaml
+      BASE_CONFIG_PATH: /soevai/librechat.soev.ai.yaml
       HOST: 0.0.0.0
       PORT: 3080
       MONGO_URI: mongodb://mongodb:27017/LibreChat
       MEILI_HOST: http://meilisearch:7700
       RAG_API_URL: http://rag_api:8000
-      GOVGPT_ROOT: /app
+      SOEVAI_ROOT: /soevai
     depends_on:
       - mongodb
       - rag_api
     env_file:
       - .env
     volumes:
-      - ./librechat.yaml:/app/librechat.yaml:ro
-      - ./librechat.merged.yaml:/app/librechat.merged.yaml:rw
-      - ./admin-overrides.yaml:/app/admin-overrides.yaml:rw
-      - ./uploads:/app/uploads
-      - ./logs:/app/api/logs
+      - ./librechat.yaml:/soevai/librechat.yaml:ro
+      - ./librechat.soev.ai.yaml:/soevai/librechat.soev.ai.yaml:rw
+      - ./admin-overrides.yaml:/soevai/admin-overrides.yaml:rw
+      - ./uploads:/soevai/uploads
+      - ./logs:/soevai/api/logs
     ports:
       - "3080:3080"
 
