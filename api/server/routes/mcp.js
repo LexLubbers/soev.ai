@@ -1,7 +1,12 @@
 const { Router } = require('express');
 const { logger } = require('@librechat/data-schemas');
 const { CacheKeys, Constants } = require('librechat-data-provider');
-const { MCPOAuthHandler, MCPTokenStorage, getUserMCPAuthMap } = require('@librechat/api');
+const {
+  createSafeUser,
+  MCPOAuthHandler,
+  MCPTokenStorage,
+  getUserMCPAuthMap,
+} = require('@librechat/api');
 const { getMCPManager, getFlowStateManager, getOAuthReconnectionManager } = require('~/config');
 const { getMCPSetupData, getServerConnectionStatus } = require('~/server/services/MCP');
 const { findToken, updateToken, createToken, deleteTokens } = require('~/models');
@@ -60,6 +65,7 @@ router.get('/:serverName/oauth/initiate', requireJwtAuth, async (req, res) => {
       serverName,
       serverUrl,
       userId,
+      getOAuthHeaders(serverName),
       oauthConfig,
     );
 
@@ -127,7 +133,12 @@ router.get('/:serverName/oauth/callback', async (req, res) => {
     });
 
     logger.debug('[MCP OAuth] Completing OAuth flow');
-    const tokens = await MCPOAuthHandler.completeOAuthFlow(flowId, code, flowManager);
+    const tokens = await MCPOAuthHandler.completeOAuthFlow(
+      flowId,
+      code,
+      flowManager,
+      getOAuthHeaders(serverName),
+    );
     logger.info('[MCP OAuth] OAuth flow completed, tokens received in callback route');
 
     /** Persist tokens immediately so reconnection uses fresh credentials */
@@ -335,9 +346,9 @@ router.post('/oauth/cancel/:serverName', requireJwtAuth, async (req, res) => {
 router.post('/:serverName/reinitialize', requireJwtAuth, async (req, res) => {
   try {
     const { serverName } = req.params;
-    const userId = req.user?.id;
+    const user = createSafeUser(req.user);
 
-    if (!userId) {
+    if (!user.id) {
       return res.status(401).json({ error: 'User not authenticated' });
     }
 
@@ -351,7 +362,7 @@ router.post('/:serverName/reinitialize', requireJwtAuth, async (req, res) => {
       });
     }
 
-    await mcpManager.disconnectUserConnection(userId, serverName);
+    await mcpManager.disconnectUserConnection(user.id, serverName);
     logger.info(
       `[MCP Reinitialize] Disconnected existing user connection for server: ${serverName}`,
     );
@@ -360,14 +371,14 @@ router.post('/:serverName/reinitialize', requireJwtAuth, async (req, res) => {
     let userMCPAuthMap;
     if (serverConfig.customUserVars && typeof serverConfig.customUserVars === 'object') {
       userMCPAuthMap = await getUserMCPAuthMap({
-        userId,
+        userId: user.id,
         servers: [serverName],
         findPluginAuthsByKeys,
       });
     }
 
     const result = await reinitMCPServer({
-      userId,
+      user,
       serverName,
       userMCPAuthMap,
     });
@@ -532,5 +543,11 @@ router.get('/:serverName/auth-values', requireJwtAuth, async (req, res) => {
     res.status(500).json({ error: 'Failed to check auth value flags' });
   }
 });
+
+function getOAuthHeaders(serverName) {
+  const mcpManager = getMCPManager();
+  const serverConfig = mcpManager.getRawConfig(serverName);
+  return serverConfig?.oauth_headers ?? {};
+}
 
 module.exports = router;
