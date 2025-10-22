@@ -10,25 +10,25 @@ services:
     labels:
       - "soevai.restart=enabled"
     environment:
-      CONFIG_PATH: /soevai/librechat.soev.ai.yaml
-      BASE_CONFIG_PATH: /soevai/librechat.soev.ai.yaml
+      CONFIG_PATH: /app/librechat.soev.ai.yaml
+      BASE_CONFIG_PATH: /app/librechat.soev.ai.yaml
       HOST: 0.0.0.0
       PORT: 3080
       MONGO_URI: mongodb://mongodb:27017/LibreChat
       MEILI_HOST: http://meilisearch:7700
       RAG_API_URL: http://rag_api:8000
-      SOEVAI_ROOT: /soevai
+      SOEVAI_ROOT: /app
     depends_on:
       - mongodb
       - rag_api
     env_file:
       - .env
     volumes:
-      - ./librechat.yaml:/soevai/librechat.yaml:ro
-      - ./librechat.soev.ai.yaml:/soevai/librechat.soev.ai.yaml:rw
-      - ./admin-overrides.yaml:/soevai/admin-overrides.yaml:rw
-      - ./uploads:/soevai/uploads
-      - ./logs:/soevai/api/logs
+      - ./librechat.yaml:/app/librechat.yaml:ro
+      - ./librechat.soev.ai.yaml:/app/librechat.soev.ai.yaml:rw
+      - ./admin-overrides.yaml:/app/admin-overrides.yaml:rw
+      - ./uploads:/app/uploads
+      - ./logs:/app/api/logs
     ports:
       - "3080:3080"
 
