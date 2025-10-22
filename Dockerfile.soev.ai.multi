@@ -29,24 +29,27 @@ WORKDIR /app
 RUN npm ci
 
 # Build `data-provider` package
-FROM base AS data-provider-build
+FROM base-min AS data-provider-build
 WORKDIR /app/packages/data-provider
 COPY packages/data-provider ./
+RUN npm install
 RUN npm run build
 
 # Build `data-schemas` package
-FROM base AS data-schemas-build
+FROM base-min AS data-schemas-build
 WORKDIR /app/packages/data-schemas
 COPY packages/data-schemas ./
 COPY --from=data-provider-build /app/packages/data-provider/dist /app/packages/data-provider/dist
+RUN npm install
 RUN npm run build
 
 # Build `api` package
-FROM base AS api-package-build
+FROM base-min AS api-package-build
 WORKDIR /app/packages/api
 COPY packages/api ./
 COPY --from=data-provider-build /app/packages/data-provider/dist /app/packages/data-provider/dist
 COPY --from=data-schemas-build /app/packages/data-schemas/dist /app/packages/data-schemas/dist
+RUN npm install
 RUN npm run build
 
 # Build librechat-admin package
@@ -67,9 +70,10 @@ COPY admin-frontend ./
 RUN npm run build
 
 # Build client component library (@librechat/client)
-FROM base AS client-lib-build
+FROM base-min AS client-lib-build
 WORKDIR /app/packages/client
 COPY packages/client ./
+RUN npm install
 RUN npm run build
 
 # Client build
