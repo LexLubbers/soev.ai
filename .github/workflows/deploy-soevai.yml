@@ -1,4 +1,4 @@
-name: Production build on IP + Domain
+name: Production soev.ai build on IP + Domain
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
       domain:
         description: 'Domain of the production server'
         type: string
-        default: chat.sovai.nl
+        default: chat.soev.ai
       tag_version:
         description: 'Image tag to deploy'
         type: string

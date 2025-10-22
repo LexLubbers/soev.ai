@@ -1,4 +1,4 @@
-name: Build & Push Docker images
+name: Build & Push soev.ai Docker images
 
 on:
   push:
