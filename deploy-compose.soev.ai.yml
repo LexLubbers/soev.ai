@@ -4,7 +4,7 @@ services:
     #   context: .
     #   dockerfile: Dockerfile.multi
     #   target: api-build
-    image: ghcr.io/Gradient-DS/soevai-api:${LIBRECHAT_TAG:-latest}
+    image: ghcr.io/gradient-ds/soevai-api:${LIBRECHAT_TAG:-latest}
     container_name: librechat_api
     ports:
       - 3080:3080

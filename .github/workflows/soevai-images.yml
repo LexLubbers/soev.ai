@@ -42,6 +42,6 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/Gradient-DS/soevai-api:${{ github.sha }}
-            ghcr.io/Gradient-DS/soevai-api:${{ steps.vars.outputs.safe_ref }}
-            ${{ github.ref == 'refs/heads/main' && 'ghcr.io/Gradient-DS/soevai-api:latest' || '' }}
+            ghcr.io/gradient-ds/soevai-api:${{ github.sha }}
+            ghcr.io/gradient-ds/soevai-api:${{ steps.vars.outputs.safe_ref }}
+            ${{ github.ref == 'refs/heads/main' && 'ghcr.io/gradient-ds/soevai-api:latest' || '' }}

@@ -1,6 +1,6 @@
 services:
   librechat_api:
-    # image: ghcr.io/Gradient-DS/soevai-api:${LIBRECHAT_TAG:-latest}
+    # image: ghcr.io/gradient-ds/soevai-api:${LIBRECHAT_TAG:-latest}
     build:
       context: .
       dockerfile: Dockerfile.soev.ai.multi
